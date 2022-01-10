@@ -20,6 +20,9 @@ APlayerCharacter::APlayerCharacter()
 	m_playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	m_playerCamera->SetupAttachment(m_springArm);
 
+	m_gunHoldPoint = CreateDefaultSubobject<USceneComponent>(TEXT("GunPoint"));
+	m_gunHoldPoint->SetupAttachment(RootComponent);
+
 	m_springArm->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
 	m_springArm->SetRelativeRotation(FRotator(-30.0f, 0.0f, 0.0f));
 
@@ -65,6 +68,14 @@ void APlayerCharacter::RotatePlayerX(float val) {
 	//AddActorLocalRotation(rotation);
 }
 
+void APlayerCharacter::OnFire() {
+
+}
+
+void APlayerCharacter::OnStopFire() {
+
+}
+
 void APlayerCharacter::RotatePlayerY(float val) {
 	currentCamRotation += val;
 	currentCamRotation = FMath::Clamp(currentCamRotation, -maxCamRotation, maxCamRotation);
@@ -81,6 +92,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("MoveFront", this, &APlayerCharacter::MovePlayerForward);
 	PlayerInputComponent->BindAxis("RotateX", this, &APlayerCharacter::RotatePlayerX);
 	PlayerInputComponent->BindAxis("RotateY", this, &APlayerCharacter::RotatePlayerY);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::OnFire);
 
 }
 

@@ -23,6 +23,8 @@ protected:
 		class UCameraComponent* m_playerCamera;
 	UPROPERTY(EditAnywhere)
 		class USpringArmComponent* m_springArm;
+	UPROPERTY(EditAnywhere)
+		class USceneComponent* m_gunHoldPoint;
 
 	UPROPERTY()
 		UArrowComponent* m_arrow;
@@ -38,6 +40,10 @@ protected:
 		void RotatePlayerX(float val);
 	UFUNCTION()
 		void RotatePlayerY(float val);
+	UFUNCTION()
+		void OnFire();
+	UFUNCTION()
+		void OnStopFire();
 
 public:	
 	// Called every frame
