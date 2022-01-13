@@ -23,6 +23,9 @@ APlayerCharacter::APlayerCharacter()
 	m_gunHoldPoint = CreateDefaultSubobject<USceneComponent>(TEXT("GunPoint"));
 	m_gunHoldPoint->SetupAttachment(RootComponent);
 
+	m_gunFirePoint = CreateDefaultSubobject<USceneComponent>(TEXT("FirePoint"));
+	m_gunFirePoint->SetupAttachment(RootComponent);
+
 	m_springArm->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
 	m_springArm->SetRelativeRotation(FRotator(-30.0f, 0.0f, 0.0f));
 
@@ -69,7 +72,11 @@ void APlayerCharacter::RotatePlayerX(float val) {
 }
 
 void APlayerCharacter::OnFire() {
-
+	if (m_projectileClass) {
+		FVector spawnLocation = m_gunFirePoint->GetComponentLocation();
+		FRotator spawnRotation = m_gunFirePoint->GetComponentRotation();
+		AProjectile* tempProjectile = GetWorld()->SpawnActor<AProjectile>(m_projectileClass, spawnLocation, spawnRotation);
+	}
 }
 
 void APlayerCharacter::OnStopFire() {
@@ -93,7 +100,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("RotateX", this, &APlayerCharacter::RotatePlayerX);
 	PlayerInputComponent->BindAxis("RotateY", this, &APlayerCharacter::RotatePlayerY);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::OnFire);
-	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::OnStopFire);
 
 }
 

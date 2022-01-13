@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Projectile.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -25,6 +26,10 @@ protected:
 		class USpringArmComponent* m_springArm;
 	UPROPERTY(EditAnywhere)
 		class USceneComponent* m_gunHoldPoint;
+	UPROPERTY(EditAnywhere)
+		class USceneComponent* m_gunFirePoint;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AProjectile> m_projectileClass;
 
 	UPROPERTY()
 		UArrowComponent* m_arrow;
