@@ -23,6 +23,7 @@ AHostileCharacter::AHostileCharacter()
 void AHostileCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 // Called every frame
@@ -34,6 +35,8 @@ void AHostileCharacter::Tick(float DeltaTime)
 
 
 }
+
+
 
 // Called to bind functionality to input
 void AHostileCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

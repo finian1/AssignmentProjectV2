@@ -30,6 +30,13 @@ protected:
 	UPROPERTY(EditAnywhere)
 		class UProjectileMovementComponent* m_movement;
 
+	UPROPERTY(EditAnywhere)
+		float projectileDamage = 10.0f;
+
+	UFUNCTION()
+		void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse,
+			const FHitResult& Hit);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

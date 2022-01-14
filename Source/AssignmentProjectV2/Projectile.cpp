@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "HostileCharacter.h"
 #include "Projectile.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -13,6 +14,8 @@ AProjectile::AProjectile()
 	m_projectile = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	m_projectile->SetupAttachment(RootComponent);
 	m_projectile->SetSimulatePhysics(true);
+	m_projectile->SetNotifyRigidBodyCollision(true);
+
 	m_movement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Movement"));
 	m_movement->MaxSpeed = movementSpeed;
 	m_movement->InitialSpeed = movementSpeed;
@@ -25,6 +28,21 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	OnActorHit.AddDynamic(this, &AProjectile::OnHit);
+
+	
+}
+
+void AProjectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
+
+	UE_LOG(LogTemp, Warning, TEXT("Hit something!"));
+	if (OtherActor->GetClass()->IsChildOf(AHostileCharacter::StaticClass())) {
+		AActor* projectileOwner = GetOwner();
+		if (projectileOwner != NULL) {
+			UGameplayStatics::ApplyDamage(OtherActor, projectileDamage, projectileOwner->GetInstigatorController(), this, UDamageType::StaticClass());
+		}
+		Destroy();
+	}
 	
 }
 
