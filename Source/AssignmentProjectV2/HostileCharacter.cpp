@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Components/ArrowComponent.h"
 #include "HostileCharacter.h"
+#include "Components/ArrowComponent.h"
+
 
 // Sets default values
 AHostileCharacter::AHostileCharacter()
@@ -31,11 +32,30 @@ void AHostileCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	deltaTime = DeltaTime;
-
+	if (isFiring) {
+		FireWeapon();
+	}
+	fireTimer -= deltaTime;
 
 
 }
 
+float AHostileCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser){
+	Destroy();
+	return 0.0f;
+}
+
+void AHostileCharacter::FireWeapon() {
+	if (fireTimer <= 0) {
+		if (m_projectileClass) {
+			FVector spawnLocation = m_gunFirePoint->GetComponentLocation();
+			FRotator spawnRotation = m_gunFirePoint->GetComponentRotation();
+			AProjectile* tempProjectile = GetWorld()->SpawnActor<AProjectile>(m_projectileClass, spawnLocation, spawnRotation);
+			tempProjectile->SetOwner(this);
+		}
+		fireTimer = 1 / fireRate;
+	}
+}
 
 
 // Called to bind functionality to input

@@ -31,7 +31,11 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 		float actorSpeed;
-
+	UFUNCTION()
+		virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+			AController* EventInstigator, AActor* DamageCauser) override;
+	UFUNCTION()
+		void FireWeapon();
 	
 
 public:	
@@ -42,4 +46,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 private:
 	float deltaTime;
+	UPROPERTY(EditAnywhere)
+		float fireRate = 2;
+	float fireTimer = 0;
+	bool isFiring = true;
 };

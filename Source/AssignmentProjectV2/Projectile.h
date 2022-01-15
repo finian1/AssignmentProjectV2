@@ -25,7 +25,7 @@ protected:
 		class UStaticMeshComponent* m_projectile;
 
 	UPROPERTY(EditAnywhere)
-		float movementSpeed = 1000.0f;
+		float movementSpeed;
 
 	UPROPERTY(EditAnywhere)
 		class UProjectileMovementComponent* m_movement;

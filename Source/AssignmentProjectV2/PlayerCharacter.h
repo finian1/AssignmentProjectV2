@@ -19,7 +19,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	UPROPERTY(EditAnywhere)
+		class UStaticMeshComponent* m_firearm;
 	UPROPERTY(EditAnywhere)
 		class UCameraComponent* m_playerCamera;
 	UPROPERTY(EditAnywhere)

@@ -23,6 +23,9 @@ APlayerCharacter::APlayerCharacter()
 	m_gunHoldPoint = CreateDefaultSubobject<USceneComponent>(TEXT("GunPoint"));
 	m_gunHoldPoint->SetupAttachment(RootComponent);
 
+	m_firearm = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Firearm"));
+	m_firearm->SetupAttachment(m_gunHoldPoint);
+
 	m_gunFirePoint = CreateDefaultSubobject<USceneComponent>(TEXT("FirePoint"));
 	m_gunFirePoint->SetupAttachment(RootComponent);
 

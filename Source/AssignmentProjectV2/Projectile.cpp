@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "HostileCharacter.h"
 #include "Projectile.h"
+#include "HostileCharacter.h"
+#include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
 
@@ -36,14 +37,25 @@ void AProjectile::BeginPlay()
 void AProjectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
 
 	UE_LOG(LogTemp, Warning, TEXT("Hit something!"));
-	if (OtherActor->GetClass()->IsChildOf(AHostileCharacter::StaticClass())) {
-		AActor* projectileOwner = GetOwner();
-		if (projectileOwner != NULL) {
-			UGameplayStatics::ApplyDamage(OtherActor, projectileDamage, projectileOwner->GetInstigatorController(), this, UDamageType::StaticClass());
+	AActor* projectileOwner = GetOwner();
+	if (projectileOwner && OtherActor) {
+		if (projectileOwner->GetClass()->IsChildOf(AHostileCharacter::StaticClass())) {
+			if (OtherActor->GetClass()->IsChildOf(APlayerCharacter::StaticClass())) {
+				UGameplayStatics::ApplyDamage(OtherActor, projectileDamage, projectileOwner->GetInstigatorController(), this, UDamageType::StaticClass());
+				
+			}
 		}
-		Destroy();
+		else if (projectileOwner->GetClass()->IsChildOf(APlayerCharacter::StaticClass())) {
+			if (OtherActor->GetClass()->IsChildOf(AHostileCharacter::StaticClass())) {
+
+
+				UGameplayStatics::ApplyDamage(OtherActor, projectileDamage, projectileOwner->GetInstigatorController(), this, UDamageType::StaticClass());
+
+				
+			}
+		}
 	}
-	
+	Destroy();
 }
 
 // Called every frame

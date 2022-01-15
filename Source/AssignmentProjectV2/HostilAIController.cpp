@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Kismet/GameplayStatics.h"
 #include "HostilAIController.h"
+#include "Kismet/GameplayStatics.h"
+
 
 void AHostilAIController::BeginPlay() {
 	Super::BeginPlay();
