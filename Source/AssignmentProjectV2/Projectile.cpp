@@ -13,7 +13,8 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
 	m_projectile = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	m_projectile->SetupAttachment(RootComponent);
+	RootComponent = m_projectile;
+	//m_projectile->SetupAttachment(RootComponent);
 	m_projectile->SetSimulatePhysics(true);
 	m_projectile->SetNotifyRigidBodyCollision(true);
 
@@ -36,13 +37,13 @@ void AProjectile::BeginPlay()
 
 void AProjectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
 
-	UE_LOG(LogTemp, Warning, TEXT("Hit something!"));
+	
 	AActor* projectileOwner = GetOwner();
-	if (projectileOwner && OtherActor) {
+	if (OtherActor) {
 		if (projectileOwner->GetClass()->IsChildOf(AHostileCharacter::StaticClass())) {
 			if (OtherActor->GetClass()->IsChildOf(APlayerCharacter::StaticClass())) {
 				UGameplayStatics::ApplyDamage(OtherActor, projectileDamage, projectileOwner->GetInstigatorController(), this, UDamageType::StaticClass());
-				
+
 			}
 		}
 		else if (projectileOwner->GetClass()->IsChildOf(APlayerCharacter::StaticClass())) {
@@ -51,10 +52,11 @@ void AProjectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImp
 
 				UGameplayStatics::ApplyDamage(OtherActor, projectileDamage, projectileOwner->GetInstigatorController(), this, UDamageType::StaticClass());
 
-				
+
 			}
 		}
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Hit something!"));
 	Destroy();
 }
 

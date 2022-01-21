@@ -14,5 +14,11 @@ class ASSIGNMENTPROJECTV2_API AHostilAIController : public AAIController
 {
 	GENERATED_BODY()
 protected:
+
+	UPROPERTY()
+		TArray<AActor*> m_waypoints;
+
+	class AActor* PlayerPawn;
 	virtual void BeginPlay() override;
+	virtual void Tick(float deltaTime) override;
 };

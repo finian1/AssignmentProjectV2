@@ -29,6 +29,8 @@ protected:
 	UPROPERTY()
 		UArrowComponent* m_arrow;
 
+	
+
 	UPROPERTY(EditAnywhere)
 		float actorSpeed;
 	UFUNCTION()
@@ -36,6 +38,7 @@ protected:
 			AController* EventInstigator, AActor* DamageCauser) override;
 	UFUNCTION()
 		void FireWeapon();
+
 	
 
 public:	
@@ -48,6 +51,9 @@ private:
 	float deltaTime;
 	UPROPERTY(EditAnywhere)
 		float fireRate = 2;
+
+
+
 	float fireTimer = 0;
 	bool isFiring = true;
 };

@@ -31,6 +31,8 @@ protected:
 		class USceneComponent* m_gunFirePoint;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AProjectile> m_projectileClass;
+	UPROPERTY(EditAnywhere)
+		USoundBase* m_mySound;
 
 	UPROPERTY()
 		UArrowComponent* m_arrow;

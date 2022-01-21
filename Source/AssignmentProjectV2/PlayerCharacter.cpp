@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Math/UnrealMathUtility.h"
 
 // Sets default values
@@ -76,6 +77,17 @@ void APlayerCharacter::RotatePlayerX(float val) {
 
 void APlayerCharacter::OnFire() {
 	if (m_projectileClass) {
+
+		UGameplayStatics::PlaySoundAtLocation(
+			GetWorld(),
+			m_mySound,
+			GetActorLocation(),
+			1.0f,
+			1.0f,
+			0.0f
+		);
+
+
 		FVector spawnLocation = m_gunFirePoint->GetComponentLocation();
 		FRotator spawnRotation = m_gunFirePoint->GetComponentRotation();
 		AProjectile* tempProjectile = GetWorld()->SpawnActor<AProjectile>(m_projectileClass, spawnLocation, spawnRotation);

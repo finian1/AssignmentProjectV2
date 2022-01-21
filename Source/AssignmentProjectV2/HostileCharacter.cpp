@@ -2,6 +2,7 @@
 
 #include "HostileCharacter.h"
 #include "Components/ArrowComponent.h"
+#include "Engine/TargetPoint.h"
 
 
 // Sets default values
@@ -24,7 +25,9 @@ AHostileCharacter::AHostileCharacter()
 void AHostileCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
 
+	
 }
 
 // Called every frame
