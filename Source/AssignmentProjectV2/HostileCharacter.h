@@ -36,8 +36,7 @@ protected:
 	UFUNCTION()
 		virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 			AController* EventInstigator, AActor* DamageCauser) override;
-	UFUNCTION()
-		void FireWeapon();
+	
 
 	
 
@@ -47,6 +46,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable,Category="TestCategory")
+		void FireWeapon();
 private:
 	float deltaTime;
 	UPROPERTY(EditAnywhere)

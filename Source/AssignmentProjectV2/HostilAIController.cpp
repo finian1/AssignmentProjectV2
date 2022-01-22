@@ -11,6 +11,7 @@ void AHostilAIController::BeginPlay() {
 
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ANavPoint::StaticClass(), m_waypoints);
+	//RandomPatrol();
 	//MoveToActor(PlayerPawn);
 }
 
@@ -20,4 +21,26 @@ void AHostilAIController::Tick(float deltaTime) {
 	//MoveToActor(PlayerPawn);
 }
 
+
+
+void AHostilAIController::RandomPatrol() {
+	if (!m_patrolling) {
+		currentTarget = ChooseWaypoint();
+		SetFocus(currentTarget);
+		MoveToLocation(currentTarget->GetActorLocation());
+	}
+}
+
+void AHostilAIController::OnMoveCompleted(FAIRequestID requestID, const FPathFollowingResult& result) {
+	Super::OnMoveCompleted(requestID, result);
+	UE_LOG(LogTemp, Warning, TEXT("Finished Move"));
+	m_patrolling = false;
+	//RandomPatrol();
+}
+
+AActor* AHostilAIController::ChooseWaypoint() {
+	int index = FMath::RandRange(0, m_waypoints.Num() - 1);
+	UE_LOG(LogTemp, Warning, TEXT("Moving to %i"), index);
+	return m_waypoints[index];
+}
 

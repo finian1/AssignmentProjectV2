@@ -56,7 +56,7 @@ void AProjectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImp
 			}
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Hit something!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Hit something!"));
 	Destroy();
 }
 
