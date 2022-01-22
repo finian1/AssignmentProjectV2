@@ -19,9 +19,14 @@ protected:
 		TArray<AActor*> m_waypoints;
 	UPROPERTY()
 		AActor* currentTarget;
+	UPROPERTY()
+		UBehaviorTree* m_hostileTree;
+	UPROPERTY()
+		UBlackboardComponent* m_blackBoard;
 	UFUNCTION()
 		AActor* ChooseWaypoint();
-	
+	UFUNCTION()
+		void LookAtPlayer();
 
 	void OnMoveCompleted(FAIRequestID requestID, const FPathFollowingResult& result) override;
 
@@ -29,7 +34,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float deltaTime) override;
 public:
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "AI Controls")
 		void RandomPatrol();
 private:
 	bool m_patrolling = false;

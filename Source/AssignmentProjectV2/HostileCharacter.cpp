@@ -54,7 +54,9 @@ void AHostileCharacter::FireWeapon() {
 			FVector spawnLocation = m_gunFirePoint->GetComponentLocation();
 			FRotator spawnRotation = m_gunFirePoint->GetComponentRotation();
 			AProjectile* tempProjectile = GetWorld()->SpawnActor<AProjectile>(m_projectileClass, spawnLocation, spawnRotation);
-			tempProjectile->SetOwner(this);
+			if (tempProjectile) {
+				tempProjectile->SetOwner(this);
+			}
 		}
 		fireTimer = 1 / fireRate;
 	}

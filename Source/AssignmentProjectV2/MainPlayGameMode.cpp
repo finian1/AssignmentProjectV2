@@ -27,7 +27,7 @@ void AMainPlayGameMode::SpawnHostiles() {
 		if (m_enemySpawnNodes[i]->GetDistanceTo(m_playerPawn) > m_distToPreventSpawn) {
 			if (FMath::RandRange(0, 100) < m_chanceForSpawn) {
 				AHostileCharacter* tempChar = GetWorld()->SpawnActor<AHostileCharacter>(m_hostileCharacterPrefab, m_enemySpawnNodes[0]->GetActorLocation() + m_enemySpawnOffset, m_enemySpawnNodes[0]->GetActorRotation());
-				tempChar->GetController<AHostilAIController>()->RandomPatrol();
+				//tempChar->GetController<AHostilAIController>()->RandomPatrol();
 			}
 		}
 	}

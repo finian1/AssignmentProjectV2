@@ -11,6 +11,7 @@ void AHostilAIController::BeginPlay() {
 
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ANavPoint::StaticClass(), m_waypoints);
+	RunBehaviorTree(m_hostileTree);
 	//RandomPatrol();
 	//MoveToActor(PlayerPawn);
 }
@@ -21,6 +22,10 @@ void AHostilAIController::Tick(float deltaTime) {
 	//MoveToActor(PlayerPawn);
 }
 
+
+void AHostilAIController::LookAtPlayer() {
+
+}
 
 
 void AHostilAIController::RandomPatrol() {
