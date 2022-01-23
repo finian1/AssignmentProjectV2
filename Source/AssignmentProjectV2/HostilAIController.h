@@ -19,9 +19,9 @@ protected:
 		TArray<AActor*> m_waypoints;
 	UPROPERTY()
 		AActor* currentTarget;
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 		UBehaviorTree* m_hostileTree;
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 		UBlackboardComponent* m_blackBoard;
 	UFUNCTION()
 		AActor* ChooseWaypoint();

@@ -27,6 +27,10 @@ protected:
 		FVector m_enemySpawnOffset;
 	UPROPERTY(EditAnywhere)
 		FString m_mainMenuName;
+	UPROPERTY(EditAnywhere)
+		float m_timeBetweenWaves;
+	UPROPERTY()
+		FTimerHandle m_waveSpawnTimer;
 	UFUNCTION()
 		void SpawnHostiles();
 

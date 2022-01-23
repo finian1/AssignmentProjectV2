@@ -13,6 +13,7 @@ void AMainPlayGameMode::BeginPlay() {
 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnPoint::StaticClass(), m_enemySpawnNodes);
 	SpawnHostiles();
+	GetWorld()->GetTimerManager().SetTimer(m_waveSpawnTimer, this, &AMainPlayGameMode::SpawnHostiles, m_timeBetweenWaves, true);
 	//EndGame();
 }
 
@@ -26,7 +27,7 @@ void AMainPlayGameMode::SpawnHostiles() {
 	for (int i = 0; i < m_enemySpawnNodes.Num(); i++) {
 		if (m_enemySpawnNodes[i]->GetDistanceTo(m_playerPawn) > m_distToPreventSpawn) {
 			if (FMath::RandRange(0, 100) < m_chanceForSpawn) {
-				AHostileCharacter* tempChar = GetWorld()->SpawnActor<AHostileCharacter>(m_hostileCharacterPrefab, m_enemySpawnNodes[0]->GetActorLocation() + m_enemySpawnOffset, m_enemySpawnNodes[0]->GetActorRotation());
+				AHostileCharacter* tempChar = GetWorld()->SpawnActor<AHostileCharacter>(m_hostileCharacterPrefab, m_enemySpawnNodes[i]->GetActorLocation() + m_enemySpawnOffset, m_enemySpawnNodes[i]->GetActorRotation());
 				//tempChar->GetController<AHostilAIController>()->RandomPatrol();
 			}
 		}
