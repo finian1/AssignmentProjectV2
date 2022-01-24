@@ -33,6 +33,9 @@ protected:
 		TSubclassOf<AProjectile> m_projectileClass;
 	UPROPERTY(EditAnywhere)
 		USoundBase* m_mySound;
+	UPROPERTY(EditAnywhere)
+		class AActor* targetPoint;
+	FCollisionQueryParams ignoreParams;
 
 	UPROPERTY()
 		UArrowComponent* m_arrow;
@@ -52,6 +55,11 @@ protected:
 		void OnFire();
 	UFUNCTION()
 		void OnStopFire();
+	UFUNCTION()
+		float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	UFUNCTION()
+		void TargetPosition();
+	
 
 public:	
 	// Called every frame
@@ -65,5 +73,6 @@ private:
 	float currentCamRotation = 0;
 	float maxCamRotation = 85;
 	float camOffset = 0;
-
+	float targetDistance = 5000;
+	FVector targetPointStore = FVector(0, 0, -1000);
 };

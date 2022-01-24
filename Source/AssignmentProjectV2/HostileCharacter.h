@@ -55,7 +55,8 @@ private:
 		float fireRate = 2;
 
 
-
+	float m_health = 10.0f;
+	int scoreOnDeath = 10;
 	float fireTimer = 0;
 	bool isFiring = true;
 };

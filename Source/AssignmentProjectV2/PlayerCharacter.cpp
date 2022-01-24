@@ -6,7 +6,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "MainPlayGameMode.h"
 #include "Math/UnrealMathUtility.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -54,7 +56,35 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	deltaTime = DeltaTime;
+	TargetPosition();
+}
 
+void APlayerCharacter::TargetPosition() {
+	if (targetPoint) {
+		UE_LOG(LogTemp, Warning, TEXT("Targeting..."));
+
+		FVector start = m_gunFirePoint->GetComponentLocation();
+		FVector forwardVector = m_gunFirePoint->GetForwardVector();
+		FVector end = (forwardVector * targetDistance) + start;
+
+		FHitResult hit;
+		
+		
+		ECollisionChannel channel = ECC_WorldStatic;
+		
+
+		if (GetWorld()->LineTraceSingleByObjectType(hit, start, end, ECC_WorldStatic, ignoreParams)) {
+			UE_LOG(LogTemp, Warning, TEXT("Target hit something"));
+			targetPoint->SetActorLocation(hit.ImpactPoint);
+		}
+		else {
+			UE_LOG(LogTemp, Warning, TEXT("Target missed"));
+			targetPoint->SetActorLocation(targetPointStore);
+		}
+		//DrawDebugLine(GetWorld(), start, hit.ImpactPoint, FColor::Green, false, 0, 0, 5);
+
+		//targetPoint->SetActorLocation(m_gunFirePoint->GetForwardVector() * targetDistance);
+	}
 }
 
 void APlayerCharacter::MovePlayerForward(float val) {
@@ -91,11 +121,20 @@ void APlayerCharacter::OnFire() {
 		FVector spawnLocation = m_gunFirePoint->GetComponentLocation();
 		FRotator spawnRotation = m_gunFirePoint->GetComponentRotation();
 		AProjectile* tempProjectile = GetWorld()->SpawnActor<AProjectile>(m_projectileClass, spawnLocation, spawnRotation);
+		ignoreParams.AddIgnoredActor(tempProjectile);
 		if (tempProjectile) {
 			tempProjectile->SetOwner(this);
 		}
 
 	}
+}
+
+float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) {
+	Cast<AMainPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->m_currentPlayerHealth -= DamageAmount;
+	if (Cast<AMainPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->m_currentPlayerHealth <= 0) {
+		UGameplayStatics::OpenLevel(GetWorld(), "MainMenu");
+	}
+	return 0.0f;
 }
 
 void APlayerCharacter::OnStopFire() {

@@ -2,6 +2,8 @@
 
 #include "HostileCharacter.h"
 #include "Components/ArrowComponent.h"
+#include "MainPlayGameMode.h"
+#include "Kismet/GameplayStatics.h"
 #include "Engine/TargetPoint.h"
 
 
@@ -44,7 +46,11 @@ void AHostileCharacter::Tick(float DeltaTime)
 }
 
 float AHostileCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser){
-	Destroy();
+	m_health -= DamageAmount;
+	if (m_health < 0.0f) {
+		Cast<AMainPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->AddScore(scoreOnDeath);
+		Destroy();
+	}
 	return 0.0f;
 }
 

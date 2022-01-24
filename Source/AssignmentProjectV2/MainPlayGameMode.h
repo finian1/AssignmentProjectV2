@@ -39,13 +39,16 @@ protected:
 public:
 	UPROPERTY(EditAnywhere)
 		float m_initialPlayerHealth;
-	float m_currentPlayerHealth;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+		float m_currentPlayerHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
 		int m_playerScore;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+		FString m_playerScoreString;
 	UFUNCTION(BlueprintCallable, Category = "Main Play Functions")
 		void EndGame();
-
+	UFUNCTION()
+		void AddScore(int val);
 private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float deltaTime) override;

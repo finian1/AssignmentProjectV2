@@ -34,6 +34,11 @@ void AMainPlayGameMode::SpawnHostiles() {
 	}
 }
 
+void AMainPlayGameMode::AddScore(int val) {
+	m_playerScore += val;
+	m_playerScoreString = FString(TEXT("Score: %i"), m_playerScore);
+}
+
 void AMainPlayGameMode::EndGame() {
 	UGameplayStatics::OpenLevel(this, FName(*m_mainMenuName), true);
 }
