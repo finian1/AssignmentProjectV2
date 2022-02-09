@@ -37,9 +37,6 @@ void AHostileCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	deltaTime = DeltaTime;
-	if (isFiring) {
-		FireWeapon();
-	}
 	fireTimer -= deltaTime;
 
 

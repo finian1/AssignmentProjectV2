@@ -61,7 +61,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 void APlayerCharacter::TargetPosition() {
 	if (targetPoint) {
-		UE_LOG(LogTemp, Warning, TEXT("Targeting..."));
+		//UE_LOG(LogTemp, Warning, TEXT("Targeting..."));
 
 		FVector start = m_gunFirePoint->GetComponentLocation();
 		FVector forwardVector = m_gunFirePoint->GetForwardVector();
@@ -74,11 +74,11 @@ void APlayerCharacter::TargetPosition() {
 		
 
 		if (GetWorld()->LineTraceSingleByObjectType(hit, start, end, ECC_WorldStatic, ignoreParams)) {
-			UE_LOG(LogTemp, Warning, TEXT("Target hit something"));
+			//UE_LOG(LogTemp, Warning, TEXT("Target hit something"));
 			targetPoint->SetActorLocation(hit.ImpactPoint);
 		}
 		else {
-			UE_LOG(LogTemp, Warning, TEXT("Target missed"));
+			//UE_LOG(LogTemp, Warning, TEXT("Target missed"));
 			targetPoint->SetActorLocation(targetPointStore);
 		}
 		//DrawDebugLine(GetWorld(), start, hit.ImpactPoint, FColor::Green, false, 0, 0, 5);
@@ -120,10 +120,23 @@ void APlayerCharacter::OnFire() {
 
 		FVector spawnLocation = m_gunFirePoint->GetComponentLocation();
 		FRotator spawnRotation = m_gunFirePoint->GetComponentRotation();
-		AProjectile* tempProjectile = GetWorld()->SpawnActor<AProjectile>(m_projectileClass, spawnLocation, spawnRotation);
+		/*AProjectile* tempProjectile = GetWorld()->SpawnActor<AProjectile>(m_projectileClass, spawnLocation, spawnRotation);
 		ignoreParams.AddIgnoredActor(tempProjectile);
 		if (tempProjectile) {
 			tempProjectile->SetOwner(this);
+		}*/
+
+		FVector start = m_gunFirePoint->GetComponentLocation();
+		FVector forwardVector = m_gunFirePoint->GetForwardVector();
+		FVector end = (forwardVector * targetDistance) + start;
+
+		FHitResult hit;
+
+		if (GetWorld()->LineTraceSingleByObjectType(hit, start, end, ECC_Pawn, ignoreParams)) {
+			//UE_LOG(LogTemp, Warning, TEXT("Target hit something"));
+			if (hit.GetActor()) {
+				UGameplayStatics::ApplyDamage(hit.GetActor(), 100.0f, Controller, this, UDamageType::StaticClass());
+			}
 		}
 
 	}

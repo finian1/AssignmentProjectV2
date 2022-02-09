@@ -3,7 +3,9 @@
 #include "HostilAIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/TargetPoint.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "NavPoint.h"
+#include "HostileCharacter.h"
 
 
 void AHostilAIController::BeginPlay() {
@@ -18,7 +20,23 @@ void AHostilAIController::BeginPlay() {
 
 void AHostilAIController::Tick(float deltaTime) {
 	Super::Tick(deltaTime);
-	
+	if (LineOfSightTo(PlayerPawn)) {
+		GetBlackboardComponent()->SetValueAsBool(TEXT("HasLineOfSight"), true);
+		SetFocus(PlayerPawn);
+		AHostileCharacter* tempPawn = GetPawn<AHostileCharacter>();
+		if (tempPawn) {
+			tempPawn->FireWeapon();
+		}
+	}
+	else {
+		GetBlackboardComponent()->SetValueAsBool(TEXT("HasLineOfSight"), false);
+		//EAIFocusPriority::Type type;
+		ClearFocus(2U);
+	}
+	if (GetBlackboardComponent()->GetValueAsBool(TEXT("HasLineOfSight"))) {
+		UE_LOG(LogTemp, Warning, TEXT("Can See Player"));
+	}
+
 	//MoveToActor(PlayerPawn);
 }
 

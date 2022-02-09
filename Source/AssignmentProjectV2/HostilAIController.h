@@ -22,7 +22,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 		UBehaviorTree* m_hostileTree;
 	UPROPERTY(EditAnywhere)
-		UBlackboardComponent* m_blackBoard;
+		class UBlackboardComponent* m_blackBoard;
 	UFUNCTION()
 		AActor* ChooseWaypoint();
 	UFUNCTION()
