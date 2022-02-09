@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MainPlayGameMode.h"
 #include "Math/UnrealMathUtility.h"
+#include "Components/PrimitiveComponent.h"
 #include "DrawDebugHelpers.h"
 
 // Sets default values
@@ -73,7 +74,7 @@ void APlayerCharacter::TargetPosition() {
 		ECollisionChannel channel = ECC_WorldStatic;
 		
 
-		if (GetWorld()->LineTraceSingleByObjectType(hit, start, end, ECC_WorldStatic, ignoreParams)) {
+		if (GetWorld()->LineTraceSingleByObjectType(hit, start, end, ECC_MAX, ignoreParams)) {
 			//UE_LOG(LogTemp, Warning, TEXT("Target hit something"));
 			targetPoint->SetActorLocation(hit.ImpactPoint);
 		}
@@ -132,11 +133,16 @@ void APlayerCharacter::OnFire() {
 
 		FHitResult hit;
 
-		if (GetWorld()->LineTraceSingleByObjectType(hit, start, end, ECC_Pawn, ignoreParams)) {
+		if (GetWorld()->LineTraceSingleByObjectType(hit, start, end, ECC_MAX, ignoreParams)) {
 			//UE_LOG(LogTemp, Warning, TEXT("Target hit something"));
 			if (hit.GetActor()) {
+				float force = 1000.0f;
+				UPrimitiveComponent* rootComp = Cast<UPrimitiveComponent>(hit.GetActor()->GetRootComponent());
+				rootComp->AddImpulse(forwardVector * force * rootComp->GetMass());
 				UGameplayStatics::ApplyDamage(hit.GetActor(), 100.0f, Controller, this, UDamageType::StaticClass());
 			}
+			
+			
 		}
 
 	}
@@ -145,7 +151,7 @@ void APlayerCharacter::OnFire() {
 float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) {
 	Cast<AMainPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->m_currentPlayerHealth -= DamageAmount;
 	if (Cast<AMainPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->m_currentPlayerHealth <= 0) {
-		UGameplayStatics::OpenLevel(GetWorld(), "MainMenu");
+		UGameplayStatics::OpenLevel(GetWorld(), "EndGame");
 	}
 	return 0.0f;
 }
